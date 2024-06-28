@@ -7,8 +7,15 @@ const useTask = () => {
   if (!context) {
     throw new Error("MyComponent must be used within a DataProvider");
   }
-  const { data, setData, completedTaskList, newTaskList, onGoingTaskList } =
-    context;
+  const {
+    data,
+    setData,
+    completedTaskList,
+    newTaskList,
+    onGoingTaskList,
+    positionData,
+    setPositionData,
+  } = context;
 
   return {
     data,
@@ -16,6 +23,8 @@ const useTask = () => {
     onGoingTaskList,
     completedTaskList,
     setData,
+    positionData,
+    setPositionData,
   };
 };
 

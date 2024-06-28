@@ -1,11 +1,40 @@
 import { ITask } from "../../types/task";
-import useContextMenu from "../../hooks/useContextMenu";
-import CustomContextMenu from "../ContextMenu/CustomContextMenu";
+import { MouseEvent } from "react";
+import useTask from "../../hooks/useTask";
 
 const Task = ({ task }: { task: ITask }) => {
-  const { menuItems } = useContextMenu();
+  const { setPositionData } = useTask();
+
+  const handleContextMenu = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const { pageX, pageY, screenX, screenY } = e;
+    console.log({ pageX, pageY, screenX, screenY });
+    setPositionData({
+      posX: pageX,
+      posY: pageY,
+      visible: true,
+      taskId: task.id,
+      taskStatus: task.status,
+    });
+  };
   return (
-    <div className="bg-white rounded-lg h-35 relative" id={`${task.id}`}>
+    <div
+      className="bg-white rounded-lg h-35 relative"
+      id={`${task.id}`}
+      onContextMenu={(e) => handleContextMenu(e)}
+      onClick={() =>
+        setPositionData({
+          posX: 0,
+          posY: 0,
+          visible: false,
+          taskId: 0,
+          taskStatus: "NEW",
+        })
+      }
+    >
       <div className="p-2">
         <div>
           <h3 className="text-base font-bold">{task.title}</h3>
@@ -25,14 +54,6 @@ const Task = ({ task }: { task: ITask }) => {
           </span>
         </div>
       </div>
-      <CustomContextMenu
-        targetId={task.id}
-        options={menuItems.filter((item) => item.label !== task.status)}
-        classes={{
-          listWrapper: "customContextmenuArea3ListWrapper",
-          listItem: "customContextmenuArea3ListItem",
-        }}
-      />
 
       <div />
     </div>

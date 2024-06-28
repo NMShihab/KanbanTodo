@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { ITask } from "../types/task";
-import { IDataContext } from "../types/dataContext";
+import { IContextData, IDataContext } from "../types/dataContext";
 import { sampleData } from "../data/TaskData";
 
 // Create the context
@@ -12,6 +12,13 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [newTaskList, setNewTaskList] = useState<ITask[]>([]);
   const [onGoingTaskList, setOnGoingTaskList] = useState<ITask[]>([]);
   const [completedTaskList, setCompletedTaskList] = useState<ITask[]>([]);
+  const [positionData, setPositionData] = useState<IContextData>({
+    visible: false,
+    posX: 0,
+    posY: 0,
+    taskId: 0,
+    taskStatus: "NEW",
+  });
 
   useEffect(() => {
     const newTask = data.filter((task) => task.status === "NEW");
@@ -25,7 +32,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <DataContext.Provider
-      value={{ data, setData, newTaskList, onGoingTaskList, completedTaskList }}
+      value={{
+        data,
+        setData,
+        newTaskList,
+        onGoingTaskList,
+        completedTaskList,
+        positionData,
+        setPositionData,
+      }}
     >
       {children}
     </DataContext.Provider>
